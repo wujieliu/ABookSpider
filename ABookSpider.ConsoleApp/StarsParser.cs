@@ -12,12 +12,14 @@ namespace ABookSpider.ConsoleApp
 {
     public class StarsParser : DataParser
     {
+        Object page;
         public override Task InitializeAsync()
         {
             AddRequiredValidator((request =>
             {
                 var host = request.RequestUri.Host;
                 var regex = host + "/cn/actresses/page";
+                request.Properties.TryGetValue("page",out page);
                 return Regex.IsMatch(request.RequestUri.ToString(), regex);
             }));
             // if you want to collect every pages
@@ -28,11 +30,11 @@ namespace ABookSpider.ConsoleApp
         protected override Task ParseAsync(DataFlowContext context)
         {//*[@id="waterfall"]/div[6]
             var starsList = context.Selectable.SelectList(Selectors.XPath(".//div[@id='waterfall']/div[@class='item']"));
-            foreach (var stars in starsList)
+            for (int i = 0; i < starsList.Count(); i++)
             {
-                var title = stars.Select(Selectors.XPath(".//div[@class='photo-info']/span"))?.Value;
-                var url = stars.Select(Selectors.XPath(".//a[@class='avatar-box text-center']/@href"))?.Value;
-                var headUrl = stars.Select(Selectors.XPath(".//div[@class='photo-frame']/img/@src"))?.Value;
+                var title = starsList.ElementAt(i).Select(Selectors.XPath(".//div[@class='photo-info']/span"))?.Value;
+                var url = starsList.ElementAt(i).Select(Selectors.XPath(".//a[@class='avatar-box text-center']/@href"))?.Value;
+                var headUrl = starsList.ElementAt(i).Select(Selectors.XPath(".//div[@class='photo-frame']/img/@src"))?.Value;
 
                 if (!string.IsNullOrWhiteSpace(url))
                 {
@@ -44,7 +46,7 @@ namespace ABookSpider.ConsoleApp
                         request.Properties.Add("title", title);
                         request.Properties.Add("url", url);
                         request.Properties.Add("starsLinkId", starsLinkId);
-
+                        request.Properties.Add("index", i+1);
                         context.AddFollowRequests(request);
                     }
 
@@ -55,6 +57,10 @@ namespace ABookSpider.ConsoleApp
                     var request = context.CreateNewRequest(new Uri(headUrl));
                     context.AddFollowRequests(request);
                 }
+            }
+            foreach (var stars in starsList)
+            {
+               
             }
 
             return Task.CompletedTask;

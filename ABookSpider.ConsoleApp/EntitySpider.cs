@@ -55,21 +55,21 @@ namespace ABookSpider.ConsoleApp
             AddDataFlow(GetDefaultStorage());
             AddDataFlow(new StarsParser());
             AddDataFlow(new ImageStorage());
-            //AddDataFlow(new DataParser<StarsEntity>());
-            AddDataFlow(new GenreParser());
-            //AddDataFlow(new DataParser<GenreEntity>());
+            AddDataFlow(new DataParser<StarsEntity>());
+            //AddDataFlow(new GenreParser());
 
-
-            SpiderOptions spiderOptions = new SpiderOptions();
-            //AddDataFlow(StorageUtilities.CreateStorage(spiderOptions.StorageType, _services.Configuration));
             AddDataFlow(GetDefaultStorage());
+            for (int i = 0; i < 206; i++)
+            {
+                await AddRequestsAsync(
+                              new Request(
+                                  "https://avmoo.casa/cn/actresses/page/" + (i + 1),new Dictionary<string, object>{ { "page", i + 1 } }));
+            }
+          
             //await AddRequestsAsync(
             //    new Request(
-            //        "https://avmoo.casa/cn/actresses/page/1"));
-            await AddRequestsAsync(
-                new Request(
-                    " https://avmoo.casa/cn/genre"));
-       
+            //        " https://avmoo.casa/cn/genre"));
+
         }
 
         protected override SpiderId GenerateSpiderId()

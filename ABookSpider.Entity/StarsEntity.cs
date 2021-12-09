@@ -15,7 +15,7 @@ namespace ABookSpider.Entity
     [EntitySelector(Expression = ".//div[@class='avatar-box']", Type = SelectorType.XPath)]
     //[GlobalValueSelector(Expression = ".//a[@class='current']", Name = "类别", Type = SelectorType.XPath)]
     //[GlobalValueSelector(Expression = "//path", Name = "LinkId", Type = SelectorType.XPath)]
-    [FollowRequestSelector(Expressions = new[] { "cn/star']" },SelectorType =SelectorType.Regex)]
+    [FollowRequestSelector(Expressions = new[] { "cn/star/']" },SelectorType =SelectorType.Regex)]
     public class StarsEntity : EntityBase<StarsEntity>
     {
 
@@ -85,7 +85,13 @@ namespace ABookSpider.Entity
 
         [Required]
         [ValueSelector(Expression = ".//div[@class='photo-frame']/img/@src")]
+        [ReplaceFormatter(NewValue = "", OldValue = "https://jp.netcdn.space/")]
         public string Headimg { get; set; }
+
+        [ValueSelector(Expression = "page", Type = SelectorType.Environment)]
+        public int SortPage { get; set; }
+        [ValueSelector(Expression = "index", Type = SelectorType.Environment)]
+        public int SortIndex { get; set; }
 
         //public int Id { get; set; }
 
