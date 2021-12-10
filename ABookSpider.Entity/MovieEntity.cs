@@ -53,7 +53,7 @@ namespace ABookSpider.Entity
 
         public string label_link_id { get; set; }
 
-        public string image_len { get; set; }
+
 
         public string series { get; set; }
 
@@ -65,7 +65,7 @@ namespace ABookSpider.Entity
         public string stars { get; set; }
 
 
-
+        public int image_len { get; set; }
 
 
 

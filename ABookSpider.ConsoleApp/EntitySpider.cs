@@ -31,7 +31,7 @@ namespace ABookSpider.ConsoleApp
             var builder = Builder.CreateDefaultBuilder<EntitySpider>(options =>
             {
                 // 每秒 1 个请求
-                options.Speed = 3;
+                options.Speed = 0.5d;
             });
             builder.UseDownloader<HttpClientDownloader>();
             builder.UseSerilog();
@@ -59,26 +59,37 @@ namespace ABookSpider.ConsoleApp
 
         protected override async Task InitializeAsync(CancellationToken stoppingToken = default)
         {
+            //AddDataFlow(new ImageStorage());
+            AddDataFlow(new StarsParser());
+            AddDataFlow(new StarsPageParser());
+            AddDataFlow(new MovieParser());
             AddDataFlow(GetDefaultStorage());
+
             //AddDataFlow(new StarsParser());
-            AddDataFlow(new ImageStorage());
-            //AddDataFlow(new DataParser<MovieEntity>());
+
+            //AddDataFlow(new DataParser<MoveStarsRelation>());
             //AddDataFlow(new GenreParser());
 
-            AddDataFlow(GetDefaultStorage());
             //for (int i = 0; i < 206; i++)
             //{
             //    await AddRequestsAsync(
             //                  new Request(
-            //                      "https://avmoo.casa/cn/actresses/page/" + (i + 1),new Dictionary<string, object>{ { "page", i + 1 } }));
+            //                      "https://avmoo.casa/cn/actresses/page/" + (i + 1), new Dictionary<string, object> { { "page", i + 1 } }));
             //}
 
             //await AddRequestsAsync(
             //    new Request(
-            //        " https://avmoo.casa/cn/genre")); 
-           // await AddRequestsAsync(
-           //new Request(
-           //    " https://avmoo.casa/cn/movie/a5ec7dc9ad49895c"));
+            //        " https://avmoo.casa/cn/genre"));
+            //await AddRequestsAsync(
+            //    new Request(
+            //        "https://jp.netcdn.space/digital/video/nbes00041/nbes00041jp-5.jpg"));
+            // await AddRequestsAsync(
+            //new Request(
+            //    " https://avmoo.casa/cn/movie/a5ec7dc9ad49895c", new Dictionary<string, object> { { "linkId", "a5ec7dc9ad49895c" } }));
+
+            await AddRequestsAsync(
+                              new Request(
+                                  "https://avmoo.casa/cn/actresses/page/", new Dictionary<string, object> { { "page", 1 } }));
 
         }
 
