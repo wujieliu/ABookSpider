@@ -31,7 +31,7 @@ namespace ABookSpider.ConsoleApp
             var builder = Builder.CreateDefaultBuilder<EntitySpider>(options =>
             {
                 // 每秒 1 个请求
-                options.Speed = 1;
+                options.Speed = 3;
             });
             builder.UseDownloader<HttpClientDownloader>();
             builder.UseSerilog();
@@ -60,9 +60,9 @@ namespace ABookSpider.ConsoleApp
         protected override async Task InitializeAsync(CancellationToken stoppingToken = default)
         {
             AddDataFlow(GetDefaultStorage());
-            AddDataFlow(new StarsParser());
+            //AddDataFlow(new StarsParser());
             AddDataFlow(new ImageStorage());
-            AddDataFlow(new DataParser<MovieEntity>());
+            //AddDataFlow(new DataParser<MovieEntity>());
             //AddDataFlow(new GenreParser());
 
             AddDataFlow(GetDefaultStorage());
@@ -76,9 +76,9 @@ namespace ABookSpider.ConsoleApp
             //await AddRequestsAsync(
             //    new Request(
             //        " https://avmoo.casa/cn/genre")); 
-            await AddRequestsAsync(
-           new Request(
-               " https://avmoo.casa/cn/movie/a5ec7dc9ad49895c"));
+           // await AddRequestsAsync(
+           //new Request(
+           //    " https://avmoo.casa/cn/movie/a5ec7dc9ad49895c"));
 
         }
 

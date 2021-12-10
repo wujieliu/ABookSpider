@@ -36,21 +36,21 @@ namespace ABookSpider.ConsoleApp
                 var url = starsList.ElementAt(i).Select(Selectors.XPath(".//a[@class='avatar-box text-center']/@href"))?.Value;
                 var headUrl = starsList.ElementAt(i).Select(Selectors.XPath(".//div[@class='photo-frame']/img/@src"))?.Value;
 
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    if (url.Contains("/"))
-                    {
-                        string[] urlSplit = url.ToString().Split('/');
-                        string starsLinkId = urlSplit[urlSplit.Length - 1];
-                        var request = context.CreateNewRequest(new Uri(url));
-                        request.Properties.Add("title", title);
-                        request.Properties.Add("url", url);
-                        request.Properties.Add("starsLinkId", starsLinkId);
-                        request.Properties.Add("index", i+1);
-                        context.AddFollowRequests(request);
-                    }
+                //if (!string.IsNullOrWhiteSpace(url))
+                //{
+                //    if (url.Contains("/"))
+                //    {
+                //        string[] urlSplit = url.ToString().Split('/');
+                //        string starsLinkId = urlSplit[urlSplit.Length - 1];
+                //        var request = context.CreateNewRequest(new Uri(url));
+                //        request.Properties.Add("title", title);
+                //        request.Properties.Add("url", url);
+                //        request.Properties.Add("starsLinkId", starsLinkId);
+                //        request.Properties.Add("index", i+1);
+                //        context.AddFollowRequests(request);
+                //    }
 
-                }
+                //}
 
                 if (!string.IsNullOrWhiteSpace(headUrl))
                 {
