@@ -35,7 +35,10 @@ namespace ABookSpider.ConsoleApp
             });
             builder.UseDownloader<HttpClientDownloader>();
             builder.UseSerilog();
-
+            builder.UseMySqlQueueBfsScheduler(x =>
+            {
+                x.ConnectionString = builder.Configuration["SchedulerConnectionString"];
+            });
             builder.IgnoreServerCertificateError();
             builder.UseQueueDistinctBfsScheduler<HashSetDuplicateRemover>();
             await builder.Build().RunAsync();
